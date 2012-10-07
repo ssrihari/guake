@@ -1233,6 +1233,7 @@ class Guake(SimpleGladeApp):
         bg_value = self.client.get_string(KEY('/style/background/color'))
         bg_color = gtk.gdk.color_parse(bg_value)
         bnt.modify_bg(gtk.STATE_NORMAL, bg_color)
+        bnt.modify_bg(gtk.STATE_ACTIVE, bg_color)
         bnt.set_property('can-focus', False)
         bnt.set_property('draw-indicator', False)
         bnt.connect('button-press-event', self.show_tab_menu)

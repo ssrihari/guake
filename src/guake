@@ -1235,9 +1235,9 @@ class Guake(SimpleGladeApp):
         bg_color = gtk.gdk.color_parse(bg_value)
         bnt.modify_bg(gtk.STATE_NORMAL, bg_color)
 
-        bg_active_value = self.client.get_string(KEY('/style/font/color'))
-        bg_active_color = gtk.gdk.color_parse(bg_active_value)
-        bnt.modify_bg(gtk.STATE_ACTIVE, bg_active_color)
+        palette = [gtk.gdk.color_parse(color) for color in
+            self.client.get_string(KEY('/style/font/palette')).split(':')]
+        bnt.modify_bg(gtk.STATE_ACTIVE, palette[-1])
 
         bnt.set_property('can-focus', False)
         bnt.set_property('draw-indicator', False)

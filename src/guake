@@ -1113,7 +1113,7 @@ class Guake(SimpleGladeApp):
         """
         pagepos = self.notebook.get_current_page()
         self.selected_tab = self.tabs.get_children()[pagepos]
-        self.selected_tab.set_label("ohmynewtab")
+        self.selected_tab.set_label(new_text)
 
     def get_current_dir(self):
         """Gets the working directory of the current tab to create a

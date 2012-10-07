@@ -1230,10 +1230,15 @@ class Guake(SimpleGladeApp):
 
         # make tab button transparent
         bnt = gtk.RadioButton(group=parent, label=label, use_underline=False)
+
         bg_value = self.client.get_string(KEY('/style/background/color'))
         bg_color = gtk.gdk.color_parse(bg_value)
         bnt.modify_bg(gtk.STATE_NORMAL, bg_color)
-        bnt.modify_bg(gtk.STATE_ACTIVE, bg_color)
+
+        bg_active_value = self.client.get_string(KEY('/style/font/color'))
+        bg_active_color = gtk.gdk.color_parse(bg_active_value)
+        bnt.modify_bg(gtk.STATE_ACTIVE, bg_active_color)
+
         bnt.set_property('can-focus', False)
         bnt.set_property('draw-indicator', False)
         bnt.connect('button-press-event', self.show_tab_menu)

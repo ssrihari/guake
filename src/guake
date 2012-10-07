@@ -1311,7 +1311,9 @@ class Guake(SimpleGladeApp):
         made with radio buttons must be updated and this method does
         this work.
         """
-        self.tabs.get_children()[page].set_active(True)
+        but = self.tabs.get_children()[page]
+        but.set_active(True)
+        but.set_relief(gtk.RELIEF_NONE)
 
     def select_tab(self, tab_index):
         """Select an already added tab by its index.

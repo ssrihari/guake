@@ -295,6 +295,9 @@ class GConfHandler(object):
             i.set_color_background(bgcolor)
             i.set_background_tint_color(bgcolor)
 
+        self.guake.event_tabs.modify_bg(gtk.STATE_NORMAL, bgcolor)
+        self.guake.toolbar_container.modify_bg(gtk.STATE_NORMAL, bgcolor)
+
     def bgimage_changed(self, client, connection_id, entry, data):
         """If the gconf var style/background/image be changed, this
         method will be called and will change the background image and
@@ -555,14 +558,6 @@ class Guake(SimpleGladeApp):
         self.tabs = self.get_widget('hbox-tabs')
         self.toolbar = self.get_widget('toolbar')
 
-        #srihari;s changes
-        bg_value = self.client.get_string(KEY('/style/background/color'))
-        bg_color = gtk.gdk.color_parse(bg_value)
-        self.eb1 = self.get_widget('event-tabs')
-        self.eb2 = self.get_widget('toolbar-container')
-        self.eb1.modify_bg(gtk.STATE_NORMAL, bg_color)
-        self.eb2.modify_bg(gtk.STATE_NORMAL, bg_color)
-
         self.mainframe = self.get_widget('mainframe')
         self.resizer = self.get_widget('resizer')
 
@@ -593,6 +588,14 @@ class Guake(SimpleGladeApp):
 
         # holds the timestamp of the losefocus event
         self.losefocus_time = 0
+
+        #set tab bar color to bg color
+        self.event_tabs = self.get_widget('event-tabs')
+        self.toolbar_container = self.get_widget('toolbar-container')
+        bg_value = self.client.get_string(KEY('/style/background/color'))
+        bg_color = gtk.gdk.color_parse(bg_value)
+        self.event_tabs.modify_bg(gtk.STATE_NORMAL, bg_color)
+        self.toolbar_container.modify_bg(gtk.STATE_NORMAL, bg_color)
 
         # double click stuff
         def double_click(hbox, event):

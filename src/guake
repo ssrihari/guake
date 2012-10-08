@@ -555,6 +555,7 @@ class Guake(SimpleGladeApp):
         # important widgets
         self.window = self.get_widget('window-root')
         self.notebook = self.get_widget('notebook-teminals')
+        self.notebook_2 = self.get_widget('notebook-second')
         self.tabs = self.get_widget('hbox-tabs')
         self.toolbar = self.get_widget('toolbar')
 
@@ -573,6 +574,7 @@ class Guake(SimpleGladeApp):
         # List of vte.Terminal widgets, it will be useful when needed
         # to get a widget by the current page in self.notebook
         self.term_list = []
+        self.term_list_2 = []
 
         # This is the pid of shells forked by each terminal. Will be
         # used to kill the process when closing a tab
@@ -1209,7 +1211,26 @@ class Guake(SimpleGladeApp):
                              box)
         box.show()
 
+        ##########################################################################################
+        box_2 = GuakeTerminalBox()
+        box_2.terminal.grab_focus()
+        box_2.terminal.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
+                                   gtk.DEST_DEFAULT_DROP |
+                                   gtk.DEST_DEFAULT_HIGHLIGHT,
+                                  [('text/uri-list', gtk.TARGET_OTHER_APP, 0)],
+                                  gtk.gdk.ACTION_COPY
+                                 )
+        box_2.terminal.connect('button-press-event', self.show_context_menu)
+        box_2.terminal.connect('child-exited', self.on_terminal_exited, box_2)
+        box_2.terminal.connect('window-title-changed',
+                             self.on_terminal_title_changed, box_2)
+        box_2.terminal.connect('drag-data-received',
+                             self.on_drag_data_received,
+                             box_2)
+        box_2.show()
+
         self.term_list.append(box.terminal)
+        self.term_list_2.append(box_2.terminal)
 
         # We can choose the directory to vte launch. It is important
         # to be used by dbus interface. I'm testing if directory is a
@@ -1252,7 +1273,9 @@ class Guake(SimpleGladeApp):
         self.tabs.pack_start(bnt, expand=False, padding=1)
 
         self.notebook.append_page(box, None)
+        self.notebook_2.append_page(box_2, None)
         self.notebook.set_current_page(self.notebook.page_num(box))
+        self.notebook_2.set_current_page(self.notebook_2.page_num(box_2))
         box.terminal.grab_focus()
         self.load_config()
 
